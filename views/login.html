@@ -1,0 +1,125 @@
+{{ define "content" }}
+<!-- <p>{{.user}}</p>
+<p>{{ index .user "is_login"}}</p>
+
+{{ if index .user "is_login" }} 
+{{ $test := index .user "data"}}
+<h4>User Logged In</h4>
+<h4>{{index .user "data"}}</h4>
+<h4>{{ $test }}</h4>
+<h4>asdsad</h4>
+{{ end }} -->
+
+<div class="container h-100 d-flex justify-content-center align-items-center">
+  <div class="card form-card spinner-border">
+    <div class="card-body">
+      <span class="sr-only">Loading...</span>
+      <h4 class="card-title">Login Page</h4>
+
+      <form id="_login-form">
+        <div class="form-group">
+          <label for="email1">Email :</label>
+          <input
+            type="email"
+            name="email"
+            id="email1"
+            class="form-control input-underlined"
+            placeholder="Email *"
+            required
+          />
+          <div class="invalid-feedback">Not a valid Email</div>
+        </div>
+        <div class="form-group">
+          <label for="password1">Password :</label>
+          <input
+            type="password"
+            name="password"
+            id="password1"
+            class="form-control input-underlined"
+            placeholder="Password *"
+            required
+          />
+          <div class="invalid-feedback">Password is required</div>
+        </div>
+
+        <div class="form-group">
+          <button
+            id="_btn-login"
+            type="submit"
+            class="btn btn-block btn-primary"
+          >
+            Login
+          </button>
+        </div>
+        <div
+          id="bad-request-alert"
+          class="alert alert-danger d-none mb-0"
+          role="alert"
+        ></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{{end}} {{define "js" }}
+
+<script>
+  $(document).ready(function () {
+    $("#_btn-login").on("click", function () {
+      const forms = $("#_login-form");
+      Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener(
+          "submit",
+          function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            } else {
+              handleLogin(event);
+            }
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    });
+  });
+
+  async function postLogin(url = "", data = {}) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify(data),
+    });
+    return response;
+  }
+
+  function handleLogin(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+
+    const value = Object.fromEntries(data.entries());
+    postLogin("/api/users/login", value)
+      .then((response) => {
+        if (response.status == 200) {
+          window.location.href = "/";
+        }
+        if (response.status >= 400) {
+          return response.json();
+        }
+      })
+      .then((resp) => {
+        if (resp) {
+          $("#bad-request-alert").removeClass("d-none").text(resp.message);
+        }
+      })
+      .catch((err) => {
+        console.log("err ", err);
+      });
+  }
+</script>
+
+{{end}}

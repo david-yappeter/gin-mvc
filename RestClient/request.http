@@ -1,0 +1,12 @@
+
+
+POST http://localhost:8080/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "David Yappeter",
+    "email": "tester@gmail.com",
+    "password": "12345",
+    "phone_country_code": "62",
+    "phone": "2105215"
+}

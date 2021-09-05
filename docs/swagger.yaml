@@ -1,0 +1,117 @@
+definitions:
+  dto.ErrorResp:
+    properties:
+      message:
+        example: error message
+        type: string
+    type: object
+  entity.UserLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  entity.UserRegister:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      phone_country_code:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  service.JwtCustomClaim:
+    properties:
+      aud:
+        type: string
+      exp:
+        type: integer
+      iat:
+        type: integer
+      id:
+        example: d270f4e3-02ea-483d-6525-d7e7a22021507
+        type: string
+      iss:
+        type: string
+      jti:
+        type: string
+      nbf:
+        type: integer
+      sub:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api:
+    get:
+      consumes:
+      - application/json
+      description: return data of access_token
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.JwtCustomClaim'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResp'
+      summary: Token Data
+      tags:
+      - Auth
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: return access_token and refresh_token in cookie
+      parameters:
+      - description: Registration
+        in: body
+        name: UserData
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserLogin'
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResp'
+      summary: Login User
+      tags:
+      - Auth
+  /api/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a New User, return access_token and refresh_token in cookie
+      parameters:
+      - description: Registration
+        in: body
+        name: UserData
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserRegister'
+      responses:
+        "200":
+          description: ""
+      summary: Register a New User
+      tags:
+      - Auth
+swagger: "2.0"
