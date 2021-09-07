@@ -15,6 +15,7 @@ type userControllerInterface interface {
 	Register(*gin.Context)
 	Login(*gin.Context)
 	LoginPage(*gin.Context)
+	RegisterPage(*gin.Context)
 }
 
 type userController struct{}
@@ -125,6 +126,22 @@ func (controller *userController) LoginPage(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "login", gin.H{
 		"title": "Login Page",
+		"user":  data,
+	})
+}
+
+func (controller *userController) RegisterPage(c *gin.Context) {
+	data, err := userData(c)
+	if err == service.ErrRecordNotFound {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	} else if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.HTML(http.StatusOK, "register", gin.H{
+		"title": "Register Page",
 		"user":  data,
 	})
 }

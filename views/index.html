@@ -1,28 +1,22 @@
-{{ define "content" }}
-<nav class="navbar navbar-expand-sm">
-  <span class="navbar-brand">Navbar</span>
-  <button
-    class="navbar-toggler d-lg-none"
-    type="button"
-    data-toggle="collapse"
-    data-target="#collapsibleNavId"
-    aria-controls="collapsibleNavId"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavId">
-    <!-- <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="#"
-          >Home <span class="sr-only">(current)</span></a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-    </ul> -->
+{{ define "content" }} {{ include "components/header" }}
+<div class="container d-flex justify-content-center" style="height: 3000px">
+  <div class="d-flex justify-content-start align-items-center">
+    <div>
+      <p id="_my-name" class="display-4">Hello, My name is David</p>
+      <p class="lead wow animate__animated animate__bounceInUp">
+        I'm a Backend Web Developer
+      </p>
+    </div>
   </div>
-</nav>
-{{end}} {{define "js"}} {{end}}
+</div>
+
+{{end}} {{define "js"}}
+<script>
+  /* $(document).ready(function () {
+    // $("#_my-name").animate({  transform: "translateY(200px)" });
+    // $("#_my-name").css("animation", "fade-in-top 1.5s");
+    //$("#_my-name").animate({ color: "red" }, 2000);
+    $("#_my-name").css("color", "red");
+  });*/
+</script>
+{{end}}

@@ -4,9 +4,26 @@
   <div class="card form-card spinner-border animate__animated animate__fadeIn">
     <div class="card-body">
       <span class="sr-only">Loading...</span>
-      <h4 class="card-title">Login Page</h4>
+      <h4 class="card-title">Register Page</h4>
 
-      <form id="_login-form">
+      <form
+        id="_register_form"
+        novalidate
+        oninput="password2.setCustomValidity(password2.value != password1.value ? 'Not match' : '')"
+      >
+        <div class="form-group">
+          <label for="name1">Email :</label>
+          <input
+            type="text"
+            name="name"
+            id="name1"
+            class="form-control input-underlined"
+            placeholder="Name *"
+            required
+            autofocus
+          />
+          <div class="invalid-feedback">Not a valid Email</div>
+        </div>
         <div class="form-group">
           <label for="email1">Email :</label>
           <input
@@ -32,14 +49,28 @@
           />
           <div class="invalid-feedback">Password is required</div>
         </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password :</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="password2"
+            class="form-control input-underlined"
+            placeholder="Confirm Password *"
+            required
+          />
+          <div class="invalid-feedback">
+            Password and Confirm Password doesn't match
+          </div>
+        </div>
 
         <div class="form-group">
           <button
-            id="_btn-login"
+            id="_btn-register"
             type="submit"
             class="btn btn-block btn-primary"
           >
-            Login
+            Register
           </button>
         </div>
         <div
@@ -56,8 +87,8 @@
 
 <script>
   $(document).ready(function () {
-    $("#_btn-login").on("click", function () {
-      const forms = $("#_login-form");
+    $("#_btn-register").on("click", function () {
+      const forms = $("#_register_form");
       Array.prototype.filter.call(forms, function (form) {
         form.addEventListener(
           "submit",
@@ -66,7 +97,7 @@
               event.preventDefault();
               event.stopPropagation();
             } else {
-              handleLogin(event);
+              handleRegister(event);
             }
             form.classList.add("was-validated");
           },
@@ -76,7 +107,7 @@
     });
   });
 
-  async function postLogin(url = "", data = {}) {
+  async function postRegister(url = "", data = {}) {
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -88,12 +119,12 @@
     return response;
   }
 
-  function handleLogin(event) {
+  function handleRegister(event) {
     event.preventDefault();
     const data = new FormData(event.target);
 
     const value = Object.fromEntries(data.entries());
-    postLogin("/api/users/login", value)
+    postRegister("/api/users/register", value)
       .then((response) => {
         if (response.status == 200) {
           window.location.href = "/";

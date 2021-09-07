@@ -21,6 +21,7 @@ func viewRoute(router *gin.Engine) {
 	})
 	router.Static("/css", "./views/layouts/css")
 
-    router.GET("/", controllers.HomeController.IndexPage)
+	router.GET("/", controllers.HomeController.IndexPage)
 	router.GET("/login", controllers.UserController.LoginPage)
+	router.GET("/register", controllers.UserController.RegisterPage)
 }
